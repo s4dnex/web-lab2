@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -29,4 +30,28 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "org.example.App"
+}
+
+tasks.jar {
+    enabled = false
+}
+
+tasks.shadowJar {
+    // manifest {
+    //     attributes["Main-Class"] = "org.example.App"
+    // }
+    // archiveClassifier = ""
+    archiveFileName.set("${project.name}.jar")
+    manifest {
+        attributes["Main-Class"] = application.mainClass
+    }
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.startScripts {
+    dependsOn(tasks.shadowJar)
+    classpath = files(tasks.shadowJar.get().archiveFile)
 }
