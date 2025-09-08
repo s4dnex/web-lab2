@@ -3,6 +3,10 @@
 
 [versions]
 shadow = "9.1.0"
+gson = "2.13.1"
+
+[libraries]
+gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

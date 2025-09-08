@@ -19,6 +19,7 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation(files("libs/fastcgi-lib.jar"))
+    implementation(libs.gson)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
