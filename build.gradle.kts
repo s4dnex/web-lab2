@@ -25,7 +25,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
     }
 }
 
@@ -39,10 +39,6 @@ tasks.jar {
 }
 
 tasks.shadowJar {
-    // manifest {
-    //     attributes["Main-Class"] = "org.example.App"
-    // }
-    // archiveClassifier = ""
     archiveFileName.set("${project.name}.jar")
     manifest {
         attributes["Main-Class"] = application.mainClass
