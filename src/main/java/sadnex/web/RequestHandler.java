@@ -1,7 +1,6 @@
 package sadnex.web;
 
 import com.fastcgi.FCGIInterface;
-import com.fastcgi.FCGIMessage;
 import sadnex.web.data.Parameter;
 import sadnex.web.data.Status;
 import sadnex.web.exception.ValidationException;
@@ -46,57 +45,54 @@ public class RequestHandler {
             String query = FCGIInterface.request.params.getProperty("QUERY_STRING");
             System.err.println("Request query: " + query);
 
-            if ("POST".equalsIgnoreCase(method)) {
-                boolean isNotValid = false;
-                Map<String, String> responseMap;
-                long startTime = System.nanoTime();
+            boolean isNotValid = false;
+            Map<String, String> responseMap;
+            long startTime = System.nanoTime();
 
-                System.err.println("Post method");
-                try {
-                    var params = QueryProcessor.queryToMap(query);
-                    var point = Validator.validatePoint(params);
+            switch (method.toUpperCase()) {
+                case "POST":
+                    System.err.println("Post method");
+                    try {
+                        var params = QueryProcessor.queryToMap(query);
+                        var point = Validator.validatePoint(params);
 
-                    Status status;
-                    if (Validator.checkHit(point)) {
-                        status = Status.OK;
+                        Status status;
+                        if (Validator.checkHit(point)) {
+                            status = Status.OK;
+                        } else {
+                            status = Status.MISS;
+                        }
+
+                        responseMap = new HashMap<>(point.toMap());
+                        responseMap.put(Parameter.RESULT.toString(), status.toString());
+                    } catch (ValidationException e) {
+                        isNotValid = true;
+                        responseMap = new HashMap<>();
+                        responseMap.put(Parameter.RESULT.toString(), Status.ERROR.toString());
+                        responseMap.put(Parameter.ERROR.toString(), e.getMessage());
                     }
-                    else {
-                        status = Status.MISS;
-                    }
+                    break;
 
-                    responseMap = new HashMap<>(point.toMap());
-                    responseMap.put(Parameter.RESULT.toString(), status.toString());
-                } catch (ValidationException e) {
+                default:
                     isNotValid = true;
                     responseMap = new HashMap<>();
                     responseMap.put(Parameter.RESULT.toString(), Status.ERROR.toString());
-                    responseMap.put(Parameter.ERROR.toString(), e.getMessage());
-                }
-
-                responseMap.put(Parameter.EXECUTION_TIME.toString(), ((System.nanoTime() - startTime) / Math.pow(10, 9)) + " s");
-                responseMap.put(Parameter.CURRENT_TIME.toString(),  LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
-                String response = JsonManager.toJson(responseMap);
-                if (isNotValid) {
-                    System.out.format(ERROR, response.getBytes(StandardCharsets.UTF_8).length, response);
-                    System.err.format(ERROR, response.getBytes(StandardCharsets.UTF_8).length, response);
-                }
-                else {
-                    System.out.format(RESPONSE, response.getBytes(StandardCharsets.UTF_8).length, response);
-                    System.err.format(RESPONSE, response.getBytes(StandardCharsets.UTF_8).length, response);
-                }
-
-                // for (var param : FCGIInterface.request.params.keySet()) {
-                //     System.err.println(param.toString());
-                // }
-                // BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                // String line;
-                // while (reader.ready() && (line = reader.readLine()) != null) {
-                //     System.err.println(line);
-                // }
-
-                System.out.flush();
+                    responseMap.put(Parameter.ERROR.toString(), "Unsupported request method");
+                    break;
             }
 
+            responseMap.put(Parameter.EXECUTION_TIME.toString(), ((System.nanoTime() - startTime) / Math.pow(10, 9)) + " s");
+            responseMap.put(Parameter.CURRENT_TIME.toString(), LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+            String response = JsonManager.toJson(responseMap);
+            if (isNotValid) {
+                System.out.format(ERROR, response.getBytes(StandardCharsets.UTF_8).length, response);
+                System.err.format(ERROR, response.getBytes(StandardCharsets.UTF_8).length, response);
+            } else {
+                System.out.format(RESPONSE, response.getBytes(StandardCharsets.UTF_8).length, response);
+                System.err.format(RESPONSE, response.getBytes(StandardCharsets.UTF_8).length, response);
+            }
+
+            System.out.flush();
             System.err.println("Request ended");
         }
 
