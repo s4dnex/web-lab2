@@ -23,7 +23,7 @@ header p {
 }
 
 footer {
-    margin: 0.5em auto;
+    margin: 0.25rem 0;
 }
 
 .container {
@@ -101,6 +101,10 @@ footer {
     align-items: center;
 }
 
+.result-section div {
+    overflow-x: auto;
+}
+
 #result-table {
     border: 0.125rem solid #555;
     width: 100%;
@@ -120,8 +124,11 @@ footer {
 }
 
 #github {
+    display: block;
     color: lightgray;
     text-decoration: none;
+    text-align: center;
+    padding: 0.1rem;
 }
 
 #github:hover {
