@@ -1,16 +1,17 @@
 package sadnex.web.data;
 
+import sadnex.web.fcgi.ResponseBodyKey;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
 public record Point(BigInteger x, BigDecimal y, BigDecimal r) {
-
-    public Map<String, String> toMap() {
+    public Map<ResponseBodyKey, Object> toMap() {
         return Map.of(
-                Parameter.X.toString(), x.toString(),
-                Parameter.Y.toString(), y.toString(),
-                Parameter.R.toString(), r.toString()
+                ResponseBodyKey.X, x.toString(),
+                ResponseBodyKey.Y, y.toString(),
+                ResponseBodyKey.R, r.toString()
         );
     }
 }

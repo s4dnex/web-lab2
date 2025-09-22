@@ -1,6 +1,6 @@
 package sadnex.web.util;
 
-import sadnex.web.data.Parameter;
+import sadnex.web.fcgi.ResponseBodyKey;
 import sadnex.web.data.Point;
 import sadnex.web.exception.ValidationException;
 
@@ -10,10 +10,10 @@ import java.math.MathContext;
 import java.util.Map;
 
 public class Validator {
-    public static Point validatePoint(Map<String, String> params) {
+    public Point validatePoint(Map<String, Object> params) {
         BigInteger x;
         try {
-            x = new BigInteger(params.get(Parameter.X.toString()));
+            x = new BigInteger(String.valueOf(params.get(ResponseBodyKey.X.toString())));
             if (x.compareTo(new BigInteger("-5")) < 0 || x.compareTo(new BigInteger("3")) > 0) {
                 throw new NumberFormatException();
             }
@@ -23,7 +23,7 @@ public class Validator {
 
         BigDecimal y;
         try {
-            y = new BigDecimal(params.get(Parameter.Y.toString()));
+            y = new BigDecimal(String.valueOf(params.get(ResponseBodyKey.Y.toString())));
             if (y.compareTo(new BigDecimal("-3")) < 0 || y.compareTo(new BigDecimal("5")) > 0) {
                 throw new NumberFormatException();
             }
@@ -33,7 +33,7 @@ public class Validator {
 
         BigDecimal r;
         try {
-            r = new BigDecimal(params.get(Parameter.R.toString()));
+            r = new BigDecimal(String.valueOf(params.get(ResponseBodyKey.R.toString())));
             if (r.compareTo(new BigDecimal("2")) < 0 || r.compareTo(new BigDecimal("5")) > 0) {
                 throw new NumberFormatException();
             }
@@ -44,7 +44,7 @@ public class Validator {
         return new Point(x, y, r);
     }
 
-    public static boolean checkHit(Point point) {
+    public boolean checkHit(Point point) {
         BigDecimal x = new BigDecimal(point.x());
         BigDecimal y = point.y();
         BigDecimal r = point.r();

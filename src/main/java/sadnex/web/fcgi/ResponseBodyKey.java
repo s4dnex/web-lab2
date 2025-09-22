@@ -1,6 +1,6 @@
-package sadnex.web.data;
+package sadnex.web.fcgi;
 
-public enum Parameter {
+public enum ResponseBodyKey {
     X("x"),
     Y("y"),
     R("r"),
@@ -11,7 +11,7 @@ public enum Parameter {
 
     private final String value;
 
-    Parameter(String value) {
+    ResponseBodyKey(String value) {
         this.value = value;
     }
 

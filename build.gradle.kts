@@ -22,8 +22,8 @@ dependencies {
     implementation(libs.gson)
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
 java {
+    // Apply a specific Java toolchain to ease working on different environments.
     toolchain {
         languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
     }
@@ -31,7 +31,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "sadnex.web.RequestHandler"
+    mainClass = "sadnex.web.Main"
 }
 
 tasks.jar {
