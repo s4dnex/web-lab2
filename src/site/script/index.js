@@ -15,14 +15,18 @@ form.addEventListener("submit", async (event) => {
     try {
         errorMsg.hidden = true;
 
-        const params = new URLSearchParams(point);
-        const response = await fetch(`/api?${params.toString()}`, { // http://localhost:52000/fcgi-bin/web-lab1.jar instead of /api on helios
-            method: "POST"
+        const response = await fetch("/api", { // http://localhost:52000/fcgi-bin/web-lab1.jar instead of /api on helios
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify(point),
         });
         
         if (!response.ok) {
             data = await response.json();
-            throw new Error();
+            throw new Error("Server error");
         }
 
         data = await response.json();
