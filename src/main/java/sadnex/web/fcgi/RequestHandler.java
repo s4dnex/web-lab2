@@ -3,11 +3,16 @@ package sadnex.web.fcgi;
 import com.fastcgi.FCGIInterface;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import io.prometheus.metrics.config.EscapingScheme;
+import io.prometheus.metrics.expositionformats.PrometheusTextFormatWriter;
+import io.prometheus.metrics.model.snapshots.Unit;
 import sadnex.web.data.Result;
 import sadnex.web.exception.ValidationException;
+import sadnex.web.metric.PrometheusMetrics;
 import sadnex.web.util.JsonManager;
 import sadnex.web.util.Validator;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -20,20 +25,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestHandler {
+    FCGIInterface fcgi;
+    ResponseSupplier responseSupplier;
+    PrometheusMetrics metrics;
+
+    public RequestHandler() {
+        this.fcgi = new FCGIInterface();
+        this.responseSupplier = new ResponseSupplier();
+        this.metrics = new PrometheusMetrics();
+    }
+
     public void start() throws IOException {
         System.err.println("FastCGI starting.");
-        FCGIInterface fcgi = new FCGIInterface();
 
         while (fcgi.FCGIaccept() >= 0) {
-            String method = FCGIInterface.request.params.getProperty("REQUEST_METHOD");
-            System.err.println("Request method: " + method);
+            metrics.getRequests().inc();
 
+            String method = FCGIInterface.request.params.getProperty("REQUEST_METHOD");
+            String uri = FCGIInterface.request.params.getProperty("REQUEST_URI");
+            System.err.printf("Request method: %s URI: %s%n", method, uri);
+
+            long startTime = System.nanoTime();
             HttpStatusCode status = HttpStatusCode.OK;
             Map<ResponseBodyKey, Object> responseMap = new HashMap<>();
-            long startTime = System.nanoTime();
 
             switch (method.toUpperCase()) {
+                case "GET":
+                    if ("/metrics".equals(uri)) {
+                        handleMetrics();
+                        continue;
+                    }
+                    break;
+
                 case "POST":
+                    if (!"/api".equals(uri)) {
+                        status = HttpStatusCode.BAD_REQUEST;
+                        break;
+                    }
+
                     try {
                         String body = readBody();
                         System.err.println("Request body: " + body);
@@ -64,12 +93,18 @@ public class RequestHandler {
                     break;
             }
 
-            responseMap.put(ResponseBodyKey.EXECUTION_TIME, ((System.nanoTime() - startTime) / Math.pow(10, 6)) + " ms");
+            double executionTime = Unit.nanosToSeconds(System.nanoTime() - startTime);
+            metrics.getRequestDuration().observe(executionTime);
+
+            if (status.getCode() >= 400 && status.getCode() <= 499) {
+                metrics.getClientErrors().inc();
+            }
+
+            responseMap.put(ResponseBodyKey.EXECUTION_TIME, executionTime + " s");
             responseMap.put(ResponseBodyKey.CURRENT_TIME, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
             String response = JsonManager.toJson(responseMap);
 
-            ResponseSupplier responseSupplier = new ResponseSupplier();
-            System.out.print(responseSupplier.getResponse(status, response));
+            System.out.print(responseSupplier.getResponse(status, ContentType.JSON, response));
 
             System.out.flush();
             System.err.println("Request ended");
@@ -84,7 +119,9 @@ public class RequestHandler {
             bodyLength = Integer.parseInt(FCGIInterface.request.params.getProperty("CONTENT_LENGTH"));
         } catch (NumberFormatException e) {
             System.err.println("Could not parse request content-length");
+            return "";
         }
+
         Reader reader = new InputStreamReader(System.in, StandardCharsets.UTF_8);
         char[] buffer = new char[bodyLength];
         int charRead = 0;
@@ -94,5 +131,18 @@ public class RequestHandler {
             charRead += n;
         }
         return new String(buffer);
+    }
+
+    private void handleMetrics() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrometheusTextFormatWriter.builder().build().write(baos, metrics.getRegistry().scrape(), EscapingScheme.DEFAULT);
+
+        sendResponse(HttpStatusCode.OK, ContentType.TEXT_PLAIN, baos.toString(StandardCharsets.UTF_8));
+    }
+
+    private void sendResponse(HttpStatusCode status, ContentType contentType, String body) {
+        String response = responseSupplier.getResponse(status, contentType, body);
+        System.out.print(response);
+        System.out.flush();
     }
 }
