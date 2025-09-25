@@ -6,7 +6,7 @@ services:
 #    ports:
 #      - "52000:52000"
     networks:
-      backend:
+      - backend
 
   httpd:
     image: "httpd:2.4.62"
@@ -16,6 +16,25 @@ services:
       - "./httpd/httpd-local.conf:/usr/local/apache2/conf/httpd.conf"
       - "./src/site:/var/www"
     networks:
-      backend:
+      - backend
+
+  prometheus:
+    build:
+      context: src/prometheus/
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - httpd
+    networks:
+      - backend
+
+  grafana:
+    image: "grafana/grafana-enterprise"
+    ports:
+      - '3000:3000'
+    networks:
+      - backend
+
 networks:
   backend:
