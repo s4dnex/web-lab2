@@ -14,10 +14,14 @@ function setPossibleValues() {
         xInput.appendChild(option);
     }
 
+    yInput.placeholder = `${minY} … ${maxY}`;
+    yInput.title = `Value from ${minY} to ${maxY}`;
     yInput.min = minY
     yInput.max = maxY
     yInput.step = "any"
 
+    rInput.placeholder = `${minR} … ${maxR}`;
+    rInput.title = `Value from ${minR} to ${maxR}`;
     rInput.min = minR
     rInput.max = maxR
     rInput.step = "any"
