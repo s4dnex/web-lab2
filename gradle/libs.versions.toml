@@ -5,9 +5,16 @@
 java = "21"
 shadow = "9.1.0"
 gson = "2.13.1"
+prometheus = "1.4.1"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
+prometheus-core = { module="io.prometheus:prometheus-metrics-core", version.ref = "prometheus" }
+prometheus-jvm = { module="io.prometheus:prometheus-metrics-instrumentation-jvm", version.ref = "prometheus" }
+prometheus-http = { module="io.prometheus:prometheus-metrics-exporter-httpserver", version.ref = "prometheus" }
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+
+[bundles]
+prometheus = [ "prometheus-core", "prometheus-jvm", "prometheus-http" ]

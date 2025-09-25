@@ -20,6 +20,7 @@ dependencies {
     // This dependency is used by the application.
     implementation(files("libs/fastcgi-lib.jar"))
     implementation(libs.gson)
+    implementation(libs.bundles.prometheus)
 }
 
 java {
