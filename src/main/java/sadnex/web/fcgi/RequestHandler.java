@@ -35,7 +35,7 @@ public class RequestHandler {
         this.metrics = new PrometheusMetrics();
     }
 
-    public void start() throws IOException {
+    public void start() {
         System.err.println("FastCGI starting.");
 
         while (fcgi.FCGIaccept() >= 0) {
@@ -49,20 +49,12 @@ public class RequestHandler {
             HttpStatusCode status = HttpStatusCode.OK;
             Map<ResponseBodyKey, Object> responseMap = new HashMap<>();
 
-            switch (method.toUpperCase()) {
-                case "GET":
-                    if ("/metrics".equals(uri)) {
-                        handleMetrics();
-                        continue;
-                    }
-                    break;
-
-                case "POST":
-                    if (!"/api".equals(uri)) {
-                        status = HttpStatusCode.BAD_REQUEST;
-                        break;
-                    }
-
+            try {
+                if ("GET".equalsIgnoreCase(method) && "/metrics".equals(uri)) {
+                    handleMetrics();
+                    continue;
+                }
+                else if ("POST".equalsIgnoreCase(method) && "/api".equals(uri)) {
                     try {
                         String body = readBody();
                         System.err.println("Request body: " + body);
@@ -77,37 +69,43 @@ public class RequestHandler {
 
                         responseMap.putAll(point.toMap());
                         responseMap.put(ResponseBodyKey.RESULT, result);
-                    } catch (ValidationException|JsonSyntaxException e) {
+                    } catch (ValidationException e) {
                         status = HttpStatusCode.BAD_REQUEST;
-                        responseMap = new HashMap<>();
                         responseMap.put(ResponseBodyKey.RESULT, Result.ERROR);
                         responseMap.put(ResponseBodyKey.ERROR, e.getMessage());
+                    } catch (JsonSyntaxException e) {
+                        status = HttpStatusCode.BAD_REQUEST;
+                        responseMap.put(ResponseBodyKey.RESULT, Result.ERROR);
+                        responseMap.put(ResponseBodyKey.ERROR, "Invalid request format");
                     }
-                    break;
-
-                default:
+                }
+                else {
                     status = HttpStatusCode.METHOD_NOT_ALLOWED;
-                    responseMap = new HashMap<>();
                     responseMap.put(ResponseBodyKey.RESULT, Result.ERROR);
                     responseMap.put(ResponseBodyKey.ERROR, "Unsupported request method");
-                    break;
+                }
+            } catch (Exception e) {
+                System.err.println("Unexpected error: " + e.getMessage());
+                e.printStackTrace(System.err);
+                status = HttpStatusCode.INTERNAL_SERVER_ERROR;
+                responseMap.clear();
+                responseMap.put(ResponseBodyKey.RESULT, Result.ERROR);
+                responseMap.put(ResponseBodyKey.ERROR, "Internal server error");
+            } finally {
+                double executionTime = Unit.nanosToSeconds(System.nanoTime() - startTime);
+                metrics.getRequestDuration().observe(executionTime);
+
+                if (status.getCode() >= 400 && status.getCode() <= 499) {
+                    metrics.getClientErrors().inc();
+                }
+
+                responseMap.put(ResponseBodyKey.EXECUTION_TIME, executionTime + " s");
+                responseMap.put(ResponseBodyKey.CURRENT_TIME, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+
+                String response = JsonManager.toJson(responseMap);
+                sendResponse(status, ContentType.JSON, response);
+                System.err.println("Request ended");
             }
-
-            double executionTime = Unit.nanosToSeconds(System.nanoTime() - startTime);
-            metrics.getRequestDuration().observe(executionTime);
-
-            if (status.getCode() >= 400 && status.getCode() <= 499) {
-                metrics.getClientErrors().inc();
-            }
-
-            responseMap.put(ResponseBodyKey.EXECUTION_TIME, executionTime + " s");
-            responseMap.put(ResponseBodyKey.CURRENT_TIME, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
-            String response = JsonManager.toJson(responseMap);
-
-            System.out.print(responseSupplier.getResponse(status, ContentType.JSON, response));
-
-            System.out.flush();
-            System.err.println("Request ended");
         }
 
         System.err.println("FastCGI terminating.");

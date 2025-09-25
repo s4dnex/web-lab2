@@ -16,7 +16,8 @@ public class ResponseSupplier {
                 result.getCode(),
                 result.getDescription(),
                 contentType.toString(),
-                body.getBytes(StandardCharsets.UTF_8).length, body
+                body.getBytes(StandardCharsets.UTF_8).length,
+                body
         );
     }
 }
