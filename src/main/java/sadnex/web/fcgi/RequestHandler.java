@@ -48,11 +48,12 @@ public class RequestHandler {
             long startTime = System.nanoTime();
             HttpStatusCode status = HttpStatusCode.OK;
             Map<ResponseBodyKey, Object> responseMap = new HashMap<>();
+            boolean sendResponse = true;
 
             try {
                 if ("GET".equalsIgnoreCase(method) && "/metrics".equals(uri)) {
                     handleMetrics();
-                    continue;
+                    sendResponse = false;
                 }
                 else if ("POST".equalsIgnoreCase(method) && "/api".equals(uri)) {
                     try {
@@ -99,11 +100,14 @@ public class RequestHandler {
                     metrics.getClientErrors().inc();
                 }
 
-                responseMap.put(ResponseBodyKey.EXECUTION_TIME, executionTime + " s");
-                responseMap.put(ResponseBodyKey.CURRENT_TIME, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+                if (sendResponse) {
+                    responseMap.put(ResponseBodyKey.EXECUTION_TIME, executionTime + " s");
+                    responseMap.put(ResponseBodyKey.CURRENT_TIME, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
 
-                String response = JsonManager.toJson(responseMap);
-                sendResponse(status, ContentType.JSON, response);
+                    String response = JsonManager.toJson(responseMap);
+                    sendResponse(status, ContentType.JSON, response);
+                }
+
                 System.err.println("Request ended");
             }
         }
