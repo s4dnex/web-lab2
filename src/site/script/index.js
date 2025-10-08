@@ -23,11 +23,6 @@ form.addEventListener("submit", async (event) => {
             },
             body: JSON.stringify(point),
         });
-        
-        if (!response.ok) {
-            data = await response.json();
-            throw new Error("Server error");
-        }
 
         data = await response.json();
     } catch (error) {
