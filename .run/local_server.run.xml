@@ -1,73 +1,72 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Local Server" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss/WildFly 33.0.0.Final" ALTERNATIVE_JRE_ENABLED="false">
-    <option name="UPDATING_POLICY" value="restart-server" />
-    <deployment>
-      <artifact name="web-lab2.war">
-        <settings />
-      </artifact>
-    </deployment>
-    <server-settings>
-      <option name="BINDING_SET_NAME" value="" />
-      <option name="SERVER" />
-      <option name="DOMAIN" value="false" />
-      <option name="SERVER_GROUP" />
-      <option name="USERNAME" value="sadnex" />
-      <option name="CREDENTIAL_ALIAS" value="17a62d04-b3d0-439c-ab8a-096878f3fdb3" />
-    </server-settings>
-    <predefined_log_file enabled="true" id="JBoss" />
-    <RunnerSettings RunnerId="Debug">
-      <option name="DEBUG_PORT" value="52936" />
-    </RunnerSettings>
-    <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
-      <option name="USE_ENV_VARIABLES" value="true" />
-      <STARTUP>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </STARTUP>
-      <SHUTDOWN>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </SHUTDOWN>
-    </ConfigurationWrapper>
-    <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
-      <option name="USE_ENV_VARIABLES" value="true" />
-      <STARTUP>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </STARTUP>
-      <SHUTDOWN>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </SHUTDOWN>
-    </ConfigurationWrapper>
-    <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
-      <option name="USE_ENV_VARIABLES" value="true" />
-      <STARTUP>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </STARTUP>
-      <SHUTDOWN>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
-        <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
-      </SHUTDOWN>
-    </ConfigurationWrapper>
-    <method v="2">
-      <option name="Make" enabled="true" />
-      <option name="BuildArtifacts" enabled="true">
-        <artifact name="web-lab2.war" />
-      </option>
-    </method>
-  </configuration>
+    <configuration default="false" name="Local Server" type="JBossConfiguration" factoryName="Local"
+                   APPLICATION_SERVER_NAME="JBoss/WildFly 33.0.0.Final" ALTERNATIVE_JRE_ENABLED="false">
+        <option name="UPDATING_POLICY" value="restart-server"/>
+        <deployment>
+            <artifact name="Gradle : web-lab2.war">
+                <settings/>
+            </artifact>
+        </deployment>
+        <server-settings>
+            <option name="BINDING_SET_NAME" value=""/>
+            <option name="SERVER"/>
+            <option name="DOMAIN" value="false"/>
+            <option name="SERVER_GROUP"/>
+            <option name="USERNAME" value="sadnex"/>
+            <option name="CREDENTIAL_ALIAS" value="17a62d04-b3d0-439c-ab8a-096878f3fdb3"/>
+        </server-settings>
+        <predefined_log_file enabled="true" id="JBoss"/>
+        <RunnerSettings RunnerId="Debug">
+            <option name="DEBUG_PORT" value="52936"/>
+        </RunnerSettings>
+        <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+            <option name="USE_ENV_VARIABLES" value="true"/>
+            <STARTUP>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </STARTUP>
+            <SHUTDOWN>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </SHUTDOWN>
+        </ConfigurationWrapper>
+        <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+            <option name="USE_ENV_VARIABLES" value="true"/>
+            <STARTUP>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </STARTUP>
+            <SHUTDOWN>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </SHUTDOWN>
+        </ConfigurationWrapper>
+        <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+            <option name="USE_ENV_VARIABLES" value="true"/>
+            <STARTUP>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </STARTUP>
+            <SHUTDOWN>
+                <option name="USE_DEFAULT" value="true"/>
+                <option name="SCRIPT" value=""/>
+                <option name="VM_PARAMETERS" value=""/>
+                <option name="PROGRAM_PARAMETERS" value=""/>
+            </SHUTDOWN>
+        </ConfigurationWrapper>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+            <option name="BuildArtifacts" enabled="true"/>
+        </method>
+    </configuration>
 </component>
