@@ -1,6 +1,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    application
+    java
+    war
     alias(libs.plugins.shadow)
 }
 
@@ -11,6 +12,7 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
+    compileOnly(libs.bundles.jakarta)
     implementation(libs.gson)
 }
 
@@ -19,29 +21,4 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
     }
-}
-
-application {
-    // Define the main class for the application.
-    mainClass = "sadnex.web.Main"
-}
-
-tasks.jar {
-    enabled = false
-}
-
-tasks.shadowJar {
-    archiveFileName.set("${project.name}.jar")
-    manifest {
-        attributes["Main-Class"] = application.mainClass
-    }
-}
-
-tasks.build {
-    dependsOn(tasks.shadowJar)
-}
-
-tasks.startScripts {
-    dependsOn(tasks.shadowJar)
-    classpath = files(tasks.shadowJar.get().archiveFile)
 }
