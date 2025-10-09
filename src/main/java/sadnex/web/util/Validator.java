@@ -1,8 +1,8 @@
 package sadnex.web.util;
 
-import sadnex.web.fcgi.ResponseBodyKey;
-import sadnex.web.data.Point;
 import sadnex.web.exception.ValidationException;
+import sadnex.web.http.BodyKey;
+import sadnex.web.model.Point;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,31 +13,31 @@ public class Validator {
     public Point validatePoint(Map<String, Object> params) {
         BigInteger x;
         try {
-            x = new BigInteger(String.valueOf(params.get(ResponseBodyKey.X.toString())));
+            x = new BigInteger(String.valueOf(params.get(BodyKey.X.toString())));
             if (x.compareTo(new BigInteger("-5")) < 0 || x.compareTo(new BigInteger("3")) > 0) {
                 throw new NumberFormatException();
             }
-        } catch (NumberFormatException|NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new ValidationException("X must be an integer from -5 to 3");
         }
 
         BigDecimal y;
         try {
-            y = new BigDecimal(String.valueOf(params.get(ResponseBodyKey.Y.toString())));
+            y = new BigDecimal(String.valueOf(params.get(BodyKey.Y.toString())));
             if (y.compareTo(new BigDecimal("-3")) < 0 || y.compareTo(new BigDecimal("5")) > 0) {
                 throw new NumberFormatException();
             }
-        } catch (NumberFormatException|NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new ValidationException("Y must be a decimal from -3 to 5");
         }
 
         BigDecimal r;
         try {
-            r = new BigDecimal(String.valueOf(params.get(ResponseBodyKey.R.toString())));
+            r = new BigDecimal(String.valueOf(params.get(BodyKey.R.toString())));
             if (r.compareTo(new BigDecimal("2")) < 0 || r.compareTo(new BigDecimal("5")) > 0) {
                 throw new NumberFormatException();
             }
-        } catch (NumberFormatException|NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new ValidationException("R must be a decimal from 2 to 5");
         }
 

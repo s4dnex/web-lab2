@@ -9,13 +9,13 @@ form.addEventListener("submit", async (event) => {
     const y = document.getElementById("y").value;
     const r = document.getElementById("r").value;
 
-    const point = { x, y, r };
+    const point = {x, y, r};
     let data = {};
 
     try {
         errorMsg.hidden = true;
 
-        const response = await fetch("/api", { // http://localhost:52000/fcgi-bin/web-lab1.jar instead of /api on helios
+        const response = await fetch("controller", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +42,7 @@ form.addEventListener("submit", async (event) => {
     tr.appendChild(td(data.y ?? y));
     tr.appendChild(td(data.r ?? r));
     tr.appendChild(td(data.currentTime ?? new Date().toLocaleTimeString()));
-    tr.appendChild(td(data.executionTime ?? "—"));
+    tr.appendChild(td(data.executionTime ?? "-"));
     // tr.appendChild(td(data.result ?? "ERROR"));
 
     let result;

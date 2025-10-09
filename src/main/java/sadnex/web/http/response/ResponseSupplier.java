@@ -1,4 +1,7 @@
-package sadnex.web.fcgi;
+package sadnex.web.http.response;
+
+import sadnex.web.http.ContentType;
+import sadnex.web.http.HttpStatusCode;
 
 import java.nio.charset.StandardCharsets;
 

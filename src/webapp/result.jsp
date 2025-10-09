@@ -24,27 +24,6 @@
     <section class="graph-section">
         <canvas id="graph" width="480" height="480"></canvas>
     </section>
-    <section class="input-section">
-        <form action="/" method="POST" id="data-form">
-            <fieldset id="input-fieldset">
-                <legend>Input Values</legend>
-                <div>
-                    <label for="x">X:</label>
-                    <select id="x" name="x" required></select>
-                </div>
-                <div>
-                    <label for="y">Y:</label>
-                    <input type="number" id="y" name="y" required>
-                </div>
-                <div>
-                    <label for="r">R:</label>
-                    <input type="number" id="r" name="r" required>
-                </div>
-            </fieldset>
-            <button type="submit">Submit</button>
-        </form>
-        <p id="error" hidden>Error</p>
-    </section>
     <section class="result-section">
         <div>
             <table id="result-table">
@@ -62,7 +41,7 @@
 </main>
 <footer>
     <hr>
-    <a href="https://github.com/s4dnex/web-lab1" target="_blank" id="github">Source Code</a>
+    <a href="https://github.com/s4dnex/web-lab2" target="_blank" id="github">Source Code</a>
 </footer>
 </body>
 </html>

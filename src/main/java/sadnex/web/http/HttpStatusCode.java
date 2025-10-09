@@ -1,4 +1,4 @@
-package sadnex.web.fcgi;
+package sadnex.web.http;
 
 public enum HttpStatusCode {
     //1xx: Informational
