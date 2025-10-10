@@ -44,7 +44,14 @@
                     </td>
                     <td><%= current.r().toString() %>
                     </td>
-                    <td><%= current.result().toString() %>
+                    <td
+                            <% if (current.result() == Result.OK) {%>
+                            style="color: lime"
+                            <%} else if (current.result() == Result.MISS) {%>
+                            style="color: red"
+                            <%} else {%> style="color: yellow" <% }%>
+                    >
+                        <%= current.result().toString() %>
                     </td>
                 </tr>
                 <% } else { %>
