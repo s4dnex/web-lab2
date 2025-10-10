@@ -8,20 +8,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import sadnex.web.exception.ValidationException;
 import sadnex.web.http.BodyKey;
 import sadnex.web.http.HttpStatusCode;
-import sadnex.web.http.RequestReader;
 import sadnex.web.http.ResponseWriter;
+import sadnex.web.model.Point;
 import sadnex.web.storage.AppContextPointStorage;
 import sadnex.web.storage.PointStorage;
 import sadnex.web.util.Validator;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/check")
 public class AreaCheckServlet extends HttpServlet {
     private PointStorage pointStorage;
-    private RequestReader requestReader;
     private ResponseWriter responseWriter;
     private Validator validator;
 
@@ -29,7 +29,6 @@ public class AreaCheckServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         pointStorage = new AppContextPointStorage(getServletContext());
-        requestReader = new RequestReader();
         responseWriter = new ResponseWriter();
         validator = new Validator();
     }
@@ -38,10 +37,11 @@ public class AreaCheckServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<BodyKey, Object> responseMap = new HashMap<>();
 
-        Map<String, Object> json = requestReader.readJsonBody(request);
+        Map<String, Object> json = (Map<String, Object>) request.getSession().getAttribute("pointMap");
 
+        Point point;
         try {
-            var point = validator.validatePoint(json);
+            point = validator.validatePoint(json);
             pointStorage.add(request.getSession().getId(), point);
             responseMap.putAll(point.toMap());
         } catch (ValidationException e) {
@@ -49,7 +49,11 @@ public class AreaCheckServlet extends HttpServlet {
             return;
         }
 
-        var dispatcher = request.getRequestDispatcher("./result.jsp");
-        dispatcher.forward(request, response);
+        List<Point> points = pointStorage.getAll(request.getSession().getId());
+        request.getSession().setAttribute("currentPoint", point);
+
+        response.setStatus(HttpStatusCode.FOUND.getCode());
+        String redirectUrl = request.getContextPath() + "/result";
+        response.sendRedirect(redirectUrl);
     }
 }

@@ -11,20 +11,32 @@ import sadnex.web.http.ContentType;
 import sadnex.web.http.HttpStatusCode;
 import sadnex.web.http.RequestReader;
 import sadnex.web.http.ResponseWriter;
+import sadnex.web.storage.AppContextPointStorage;
+import sadnex.web.storage.PointStorage;
 
 import java.io.IOException;
 import java.util.Map;
 
 @WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
+    private PointStorage pointStorage;
     private RequestReader requestReader;
     private ResponseWriter responseWriter;
 
     @Override
     public void init() throws ServletException {
         super.init();
+        pointStorage = new AppContextPointStorage(getServletContext());
         requestReader = new RequestReader();
         responseWriter = new ResponseWriter();
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sessionId = request.getSession().getId();
+        request.setAttribute("points", pointStorage.getAll(sessionId));
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+        dispatcher.forward(request, response);
     }
 
     @Override
@@ -52,6 +64,7 @@ public class ControllerServlet extends HttpServlet {
             return;
         }
 
+        request.getSession().setAttribute("pointMap", json);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/check");
         dispatcher.forward(request, response);
     }

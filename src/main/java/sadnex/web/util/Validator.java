@@ -5,15 +5,14 @@ import sadnex.web.http.BodyKey;
 import sadnex.web.model.Point;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Map;
 
 public class Validator {
     public Point validatePoint(Map<String, Object> params) throws ValidationException {
-        BigInteger x;
+        BigDecimal x;
         try {
-            x = new BigInteger(String.valueOf(params.get(BodyKey.X.toString())));
-            if (x.compareTo(new BigInteger("-5")) < 0 || x.compareTo(new BigInteger("3")) > 0) {
+            x = new BigDecimal(String.valueOf(params.get(BodyKey.X.toString())));
+            if (x.compareTo(new BigDecimal("-5")) < 0 || x.compareTo(new BigDecimal("3")) > 0) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException | NullPointerException e) {
