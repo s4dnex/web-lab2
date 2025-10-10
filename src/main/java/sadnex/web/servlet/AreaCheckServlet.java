@@ -16,7 +16,6 @@ import sadnex.web.util.Validator;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @WebServlet("/check")
@@ -49,9 +48,7 @@ public class AreaCheckServlet extends HttpServlet {
             return;
         }
 
-        List<Point> points = pointStorage.getAll(request.getSession().getId());
         request.getSession().setAttribute("currentPoint", point);
-
         response.setStatus(HttpStatusCode.FOUND.getCode());
         String redirectUrl = request.getContextPath() + "/result";
         response.sendRedirect(redirectUrl);

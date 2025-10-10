@@ -14,8 +14,7 @@ public class RequestReader {
 
     public String readBody(HttpServletRequest request) throws IOException {
         var buffer = request.getInputStream().readAllBytes();
-        String body = new String(buffer, StandardCharsets.UTF_8);
-        return body;
+        return new String(buffer, StandardCharsets.UTF_8);
     }
 
     public Map<String, Object> readJsonBody(HttpServletRequest request) throws IOException {
