@@ -1,5 +1,5 @@
 <%@ page import="sadnex.web.model.Point" %>
-<%@ page import="sadnex.web.storage.AppContextPointStorage" %>
+<%@ page import="sadnex.web.model.Result" %>
 
 <!doctype html>
 <html lang="en">
@@ -10,9 +10,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Point Blank</title>
     <link rel="stylesheet" href="style/main.css">
-    <script src="script/init.js"></script>
-    <script src="script/index.js" defer></script>
-    <script src="script/graph.js" defer></script>
 </head>
 <body>
 <header class="info">
@@ -36,24 +33,37 @@
                     <th>R</th>
                     <th>Result</th>
                 </tr>
-                <% for (Point point : new AppContextPointStorage(session.getServletContext()).getAll(session.getId())) { %>
+                <%
+                    Point current = (Point) request.getAttribute("currentPoint");
+                %>
+                <% if (current != null) { %>
                 <tr>
-                    <td>
-                        <%= point.x().toString() %>
+                    <td><%= current.x().toString() %>
                     </td>
-                    <td>
-                        <%= point.y().toString() %>
+                    <td><%= current.y().toString() %>
                     </td>
-                    <td>
-                        <%= point.r().toString() %>
+                    <td><%= current.r().toString() %>
                     </td>
-                    <td>
-                        <%= point.result().toString() %>
+                    <td><%= current.result().toString() %>
                     </td>
                 </tr>
+                <% } else { %>
+                <tr>
+                    <td colspan="4">No result</td>
+                </tr>
                 <% } %>
+
+                <script src="script/graph.js"></script>
+
+                <script>
+                    drawPoint(<%= current.x() %>, <%= current.y() %>, <%= current.r() %>, <%=current.result() == Result.OK %>);
+                </script>
             </table>
         </div>
+
+        <a href="${pageContext.request.contextPath}/" style="text-decoration: none">
+            <button type="submit">Return</button>
+        </a>
     </section>
 </main>
 <footer>

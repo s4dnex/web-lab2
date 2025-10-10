@@ -1,3 +1,8 @@
+<%@ page import="sadnex.web.model.Point" %>
+<%@ page import="java.util.List" %>
+<%@ page import="sadnex.web.model.Result" %>
+<%@ page import="sadnex.web.storage.AppContextPointStorage" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +14,6 @@
     <link rel="stylesheet" href="style/main.css">
     <script src="script/init.js"></script>
     <script src="script/index.js" defer></script>
-    <script src="script/graph.js" defer></script>
 </head>
 <body>
 <header class="info">
@@ -24,6 +28,7 @@
     <section class="graph-section">
         <canvas id="graph" width="480" height="480"></canvas>
     </section>
+    <script src="script/graph.js"></script>
     <section class="input-section">
         <form action="${pageContext.request.contextPath}/controller" method="POST" id="data-form">
             <fieldset id="input-fieldset">
@@ -54,6 +59,27 @@
                     <th>R</th>
                     <th>Result</th>
                 </tr>
+                <%
+                    List<Point> points = new AppContextPointStorage(request.getServletContext()).getAll(request.getSession().getId());
+                    if (points == null) {
+                        points = java.util.Collections.emptyList();
+                    }
+                %>
+                <% for (Point p : points) { %>
+                <tr>
+                    <td><%= p.x().toString() %>
+                    </td>
+                    <td><%= p.y().toString() %>
+                    </td>
+                    <td><%= p.r().toString() %>
+                    </td>
+                    <td><%= p.result().toString() %>
+                    </td>
+                </tr>
+                <script>
+                    drawPoint(<%= p.x() %>, <%= p.y() %>, <%= p.r() %>, <%=p.result() == Result.OK %>)
+                </script>
+                <% } %>
             </table>
         </div>
     </section>

@@ -111,3 +111,25 @@ function drawPoint(x, y, r, isInside) {
     ctx.closePath();
     ctx.fill();
 }
+
+canvas.addEventListener("click", (e) => {
+    const rInput = document.getElementById("r");
+
+    const r = parseFloat(rInput.value);
+    if (!r || isNaN(r) || r === 0) {
+        errorMsg.textContent = "Please set a valid R before clicking on the graph.";
+        errorMsg.hidden = false;
+        return;
+    }
+
+    const scale = R / r;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const x = (mouseX - centerX) / scale;
+    const y = (centerY - mouseY) / scale;
+
+    const point = {x, y, r};
+    sendRequest(point);
+});
