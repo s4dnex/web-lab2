@@ -25,7 +25,7 @@
         <canvas id="graph" width="480" height="480"></canvas>
     </section>
     <section class="input-section">
-        <form action="${pageContext.request.contextPath}/" method="POST" id="data-form">
+        <form action="${pageContext.request.contextPath}/controller" method="POST" id="data-form">
             <fieldset id="input-fieldset">
                 <legend>Input Values</legend>
                 <div>
@@ -52,8 +52,6 @@
                     <th>X</th>
                     <th>Y</th>
                     <th>R</th>
-                    <th>Time</th>
-                    <th>Execution time</th>
                     <th>Result</th>
                 </tr>
             </table>

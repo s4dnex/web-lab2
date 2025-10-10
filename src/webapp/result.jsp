@@ -1,3 +1,6 @@
+<%@ page import="sadnex.web.model.Point" %>
+<%@ page import="sadnex.web.storage.AppContextPointStorage" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,10 +34,24 @@
                     <th>X</th>
                     <th>Y</th>
                     <th>R</th>
-                    <th>Time</th>
-                    <th>Execution time</th>
                     <th>Result</th>
                 </tr>
+                <% for (Point point : new AppContextPointStorage(session.getServletContext()).getAll(session.getId())) { %>
+                <tr>
+                    <td>
+                        <%= point.x().toString() %>
+                    </td>
+                    <td>
+                        <%= point.y().toString() %>
+                    </td>
+                    <td>
+                        <%= point.r().toString() %>
+                    </td>
+                    <td>
+                        <%= point.result().toString() %>
+                    </td>
+                </tr>
+                <% } %>
             </table>
         </div>
     </section>

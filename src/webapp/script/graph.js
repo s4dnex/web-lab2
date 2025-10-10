@@ -26,7 +26,7 @@ function drawPoint(x, y, r, isInside) {
     const gap = 6;
     ctx.font = "bold 1rem monospace";
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
-    
+
     // X-axis
     ctx.beginPath();
     ctx.moveTo(0, centerY);
@@ -38,7 +38,7 @@ function drawPoint(x, y, r, isInside) {
     ctx.fillText("Y", centerX + 10, 10);
     ctx.strokeStyle = "white";
     ctx.stroke()
-    
+
     // X-axis arrow
     ctx.beginPath();
     ctx.lineTo(width - arrowLength, centerY + arrowLength);
@@ -89,17 +89,18 @@ function drawPoint(x, y, r, isInside) {
     ctx.fillStyle = "rgba(250, 250, 250, 0.2)";
 
     // I
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, R / 2, 0, -Math.PI / 2, true);
-    ctx.lineTo(centerX, centerY);
-    ctx.fill();
+
 
     // II
+    ctx.beginPath();
+    ctx.rect(centerX, centerY, -R / 2, -R);
+    ctx.fill();
 
     // III
     ctx.beginPath();
-    ctx.rect(centerX, centerY, -R, R);
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, R / 2, Math.PI, Math.PI / 2, true);
+    ctx.lineTo(centerX, centerY);
     ctx.fill();
 
     // IV
