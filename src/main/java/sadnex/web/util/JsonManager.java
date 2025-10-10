@@ -9,11 +9,11 @@ import java.lang.reflect.Type;
 public class JsonManager {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static String toJson(Object object) {
+    public String toJson(Object object) {
         return gson.toJson(object);
     }
 
-    public static <T> T fromJson(String json, Type type) throws JsonSyntaxException {
+    public <T> T fromJson(String json, Type type) throws JsonSyntaxException {
         return gson.fromJson(json, type);
     }
 }

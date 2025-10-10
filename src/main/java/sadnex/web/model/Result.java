@@ -1,4 +1,4 @@
-package sadnex.web.http.response;
+package sadnex.web.model;
 
 public enum Result {
     OK,
