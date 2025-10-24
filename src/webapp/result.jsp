@@ -38,20 +38,20 @@
                 %>
                 <% if (current != null) { %>
                 <tr>
-                    <td><%= current.x().toString() %>
+                    <td><%= current.getX().toString() %>
                     </td>
-                    <td><%= current.y().toString() %>
+                    <td><%= current.getY().toString() %>
                     </td>
-                    <td><%= current.r().toString() %>
+                    <td><%= current.getR().toString() %>
                     </td>
                     <td
-                            <% if (current.result() == Result.OK) {%>
+                            <% if (current.getResult() == Result.OK) {%>
                             style="color: lime"
-                            <%} else if (current.result() == Result.MISS) {%>
+                            <%} else if (current.getResult() == Result.MISS) {%>
                             style="color: red"
                             <%} else {%> style="color: yellow" <% }%>
                     >
-                        <%= current.result().toString() %>
+                        <%= current.getResult().toString() %>
                     </td>
                 </tr>
                 <% } else { %>
@@ -63,7 +63,7 @@
                 <script src="script/graph.js"></script>
 
                 <script>
-                    drawPoint(<%= current.x() %>, <%= current.y() %>, <%= current.r() %>, <%=current.result() == Result.OK %>);
+                    drawPoint(<%= current.getX() %>, <%= current.getY() %>, <%= current.getR() %>, <%=current.getResult() == Result.OK %>);
                 </script>
             </table>
         </div>

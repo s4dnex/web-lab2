@@ -13,6 +13,8 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     compileOnly(libs.bundles.jakarta)
+    compileOnly(libs.bundles.infinispan)
+    compileOnly(libs.bundles.javax)
     implementation(libs.gson)
 }
 

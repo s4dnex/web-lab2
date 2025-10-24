@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="local_server" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss/WildFly 33.0.0.Final" ALTERNATIVE_JRE_ENABLED="false">
+  <configuration default="false" name="local_server" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss/WildFly 11.0.0.Final" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="ms-11">
+    <option name="COMMON_VM_ARGUMENTS" value="--add-modules=java.se --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED --add-exports=java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED -Djavax.xml.parsers.SAXParserFactory=com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl" />
     <option name="UPDATING_POLICY" value="redeploy-artifacts" />
     <deployment>
       <artifact name="Gradle : web-lab2.war">
@@ -51,10 +52,10 @@
     <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
       <option name="USE_ENV_VARIABLES" value="true" />
       <STARTUP>
-        <option name="USE_DEFAULT" value="true" />
-        <option name="SCRIPT" value="" />
+        <option name="USE_DEFAULT" value="false" />
+        <option name="SCRIPT" value="C:/Libraries/wildfly-11.0.0.Final/bin/standalone.bat" />
         <option name="VM_PARAMETERS" value="" />
-        <option name="PROGRAM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="-c standalone-full.xml" />
       </STARTUP>
       <SHUTDOWN>
         <option name="USE_DEFAULT" value="true" />

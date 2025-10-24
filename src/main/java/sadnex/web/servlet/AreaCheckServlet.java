@@ -1,19 +1,19 @@
 package sadnex.web.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import sadnex.web.exception.ValidationException;
 import sadnex.web.http.BodyKey;
 import sadnex.web.http.HttpStatusCode;
 import sadnex.web.http.ResponseWriter;
 import sadnex.web.model.Point;
-import sadnex.web.storage.AppContextPointStorage;
+import sadnex.web.storage.InfinispanPointStorage;
 import sadnex.web.storage.PointStorage;
 import sadnex.web.util.Validator;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class AreaCheckServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        pointStorage = new AppContextPointStorage(getServletContext());
+        pointStorage = new InfinispanPointStorage();
         responseWriter = new ResponseWriter();
         validator = new Validator();
     }

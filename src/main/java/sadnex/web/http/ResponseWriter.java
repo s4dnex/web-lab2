@@ -1,9 +1,9 @@
 package sadnex.web.http;
 
-import jakarta.servlet.http.HttpServletResponse;
 import sadnex.web.model.Result;
 import sadnex.web.util.JsonManager;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

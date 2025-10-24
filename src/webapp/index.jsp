@@ -1,7 +1,7 @@
 <%@ page import="sadnex.web.model.Point" %>
 <%@ page import="java.util.List" %>
 <%@ page import="sadnex.web.model.Result" %>
-<%@ page import="sadnex.web.storage.AppContextPointStorage" %>
+<%@ page import="java.util.Collections" %>
 
 <!doctype html>
 <html lang="en">
@@ -60,31 +60,29 @@
                     <th>Result</th>
                 </tr>
                 <%
-                    List<Point> points = new AppContextPointStorage(request.getServletContext()).getAll(request.getSession().getId());
-                    if (points == null) {
-                        points = java.util.Collections.emptyList();
-                    }
+                    List<Point> points = (List<Point>) request.getAttribute("points");
+                    if (points == null) points = Collections.emptyList();
                 %>
                 <% for (Point p : points) { %>
                 <tr>
-                    <td><%= p.x().toString() %>
+                    <td><%= p.getX().toString() %>
                     </td>
-                    <td><%= p.y().toString() %>
+                    <td><%= p.getY().toString() %>
                     </td>
-                    <td><%= p.r().toString() %>
+                    <td><%= p.getR().toString() %>
                     </td>
                     <td
-                            <% if (p.result() == Result.OK) {%>
+                            <% if (p.getResult() == Result.OK) {%>
                             style="color: lime"
-                            <%} else if (p.result() == Result.MISS) {%>
+                            <%} else if (p.getResult() == Result.MISS) {%>
                             style="color: red"
                             <%} else {%> style="color: yellow" <% }%>
                     >
-                        <%= p.result().toString() %>
+                        <%= p.getResult().toString() %>
                     </td>
                 </tr>
                 <script>
-                    drawPoint(<%= p.x() %>, <%= p.y() %>, <%= p.r() %>, <%=p.result() == Result.OK %>)
+                    drawPoint(<%= p.getX() %>, <%= p.getY() %>, <%= p.getR() %>, <%=p.getResult() == Result.OK %>)
                 </script>
                 <% } %>
             </table>

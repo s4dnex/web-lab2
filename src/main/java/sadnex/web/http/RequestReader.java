@@ -1,9 +1,9 @@
 package sadnex.web.http;
 
 import com.google.gson.reflect.TypeToken;
-import jakarta.servlet.http.HttpServletRequest;
 import sadnex.web.util.JsonManager;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;

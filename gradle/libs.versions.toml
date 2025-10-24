@@ -1,15 +1,22 @@
 [versions]
-java = "21"
+java = "11"
 shadow = "9.1.0"
 gson = "2.13.1"
-jakarta-web-api = "10.0.0"
+jakarta-ee = "7.0"
+infinispan = "8.2.8.Final"
+javax-cache = "1.0.0"
 
 [libraries]
-gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
-jakarta-web-api = { module = "jakarta.platform:jakarta.jakartaee-web-api", version.ref = "jakarta-web-api" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jakarta-ee = { module = "javax:javaee-api", version.ref = "jakarta-ee" }
+infinispan-core = { module = "org.infinispan:infinispan-core", version.ref = "infinispan" }
+infinispan-jcache = { module = "org.infinispan:infinispan-jcache", version.ref = "infinispan" }
+javax-cache = { module = "javax.cache:cache-api", version.ref = "javax-cache" }
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 
 [bundles]
-jakarta = [ "jakarta-web-api" ]
+jakarta = ["jakarta-ee"]
+infinispan = ["infinispan-core", "infinispan-jcache"]
+javax = ["javax-cache"]
