@@ -73,7 +73,14 @@
                     </td>
                     <td><%= p.r().toString() %>
                     </td>
-                    <td><%= p.result().toString() %>
+                    <td
+                            <% if (p.result() == Result.OK) {%>
+                            style="color: lime"
+                            <%} else if (p.result() == Result.MISS) {%>
+                            style="color: red"
+                            <%} else {%> style="color: yellow" <% }%>
+                    >
+                        <%= p.result().toString() %>
                     </td>
                 </tr>
                 <script>
